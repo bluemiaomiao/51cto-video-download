@@ -33,16 +33,22 @@ def total_time(total_time):
 
 # 下载并保存文件
 def download(filename, urls, func_decode=None):
-    try:
-        with open(filename, 'ab') as file:
-            for url in urls:
-                res = requests.get(url)
-                data = res.content
-                if func_decode is not None:
-                    data = func_decode(data)
-                file.write(data)
-    except IOError as e:
-        print(e)
+    print("保存的文件：", filename)
+    print("音视频流列表：", urls)
+    if urls:
+        try:
+            with open(filename, 'ab') as file:
+                for url in urls:
+                    res = requests.get(url)
+                    data = res.content
+                    if func_decode is not None:
+                        data = func_decode(data)
+                    file.write(data)
+        except IOError as e:
+            print(e)
+    else:
+        # fix bug by bluemiaomiao
+        print("检测到该选集不是音视频，可能是ZIP资料包，已经忽略")
     return
 
 

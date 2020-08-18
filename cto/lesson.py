@@ -122,15 +122,20 @@ class Lesson(object):
         try:
             arr = json.loads(resp)
         except Exception, e:
-            print (e.message)
-            print("下载报错")
-            raise Exception("""
-            获取m3u8文件报错，
-            链接地址：%s
-            接口返回:%s
-            sign: %s
-            exception message: %s
-            """ % (url, resp, self.sign, e.message))
+            # fix bug by bluemiaomiao
+            print("下载报错，当前选集可能是课程资料而不是视频，尝试忽略..")
+            print("链接地址：", url)
+            print("接口返回：", resp)
+            print("签名信息：", self.sign)
+            print("异常信息：", e.message)
+            return None
+            # raise Exception("""
+            # 获取m3u8文件报错，
+            # 链接地址：%s
+            # 接口返回:%s
+            # sign: %s
+            # exception message: %s
+            # """ % (url, resp, self.sign, e.message))
 
         dispatch = arr['dispatch']
         high = dispatch[0]
